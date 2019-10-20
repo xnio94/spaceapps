@@ -1,0 +1,214 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import '../services/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'CircleButton.dart';
+import 'Predection.dart';
+import 'ProfileWidget.dart';
+import 'package:http/http.dart' as http;
+
+class Start extends StatefulWidget {
+  @override
+  _StartState createState() => _StartState();
+}
+
+class EnergyConsumption {
+  double value = 0;
+
+  void edit(val) {
+    value = val;
+  }
+}
+
+class _StartState extends State<Start> {
+  Position position;
+  EnergyConsumption monthlyEnergyConsumption = EnergyConsumption();
+  Color locationColor;
+  Color energyConsumptionColor;
+
+  Future<http.Response> getSolarData(String lat, String lon) async {
+    String cord = "lat=$lat&lon=$lon";
+/*
+    print('https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py'
+        '?request=execute&identifier=SinglePoint&parameters=DIFF,DNR&userCommunity=SSE&'
+        'tempAverage=CLIMATOLOGY&outputList=JSON,ASCII&user=anonymous&' +
+        cord);
+    */
+
+    return http.get('https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py'
+            '?request=execute&identifier=SinglePoint&parameters=DIFF,DNR&userCommunity=SSE&'
+            'tempAverage=CLIMATOLOGY&outputList=JSON,ASCII&user=anonymous&' +
+        cord);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              'Start',
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.star, color: Colors.white),
+                onPressed: () async {
+                  await Provider.of<AuthService>(context).signOut();
+                  Navigator.pushNamed(context, '/');
+                },
+              ),
+            ]),
+        body: Material(
+          color: Colors.lightBlue.shade700,
+          child: InkWell(
+            splashColor: Colors.black38,
+            onTap: () {},
+            child: Center(
+              child: Stack(
+                //crossAxisAlignment: CrossAxisAlignment.end,
+                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  CircleButton(
+                    alignment: Alignment(1, -1),
+                    text: (position == null) ? "1. add location" : position.toString(),
+                    //.latitude.toString(),
+                    radius: 210,
+                    color: locationColor,
+                    onTap: () async {
+                      Position pos = await Geolocator()
+                          .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+                      setState(() {
+                        position = pos;
+                        locationColor = Colors.green;
+                      });
+                    },
+                  ),
+                  CircleButton(
+                    alignment: Alignment(-.8, 0.2),
+                    text: (monthlyEnergyConsumption.value == 0)
+                        ? "2. add energy consumption"
+                        : monthlyEnergyConsumption.value.toString() + " kW-hr",
+                    radius: 300,
+                    color: energyConsumptionColor,
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MyDialog(
+                            energyConsumption: monthlyEnergyConsumption,
+                            text1: 'Enter your monthly energy consumption (kW-hr)',
+                          );
+                        },
+                      );
+                      if (monthlyEnergyConsumption.value != 0) {
+                        setState(() {
+                          energyConsumptionColor = Colors.green;
+                        });
+                      }
+                    },
+                  ),
+                  CircleButton(
+                    alignment: Alignment(.95, .95),
+                    text: "3. Predict",
+                    radius: 160,
+                    onTap: () async {
+                      print(position.latitude.toString());
+                      print(position.longitude.toString());
+                      //print('start');
+                      var x = await getSolarData(
+                        position.latitude.toString(),
+                        position.longitude.toString(),
+                      );
+                      print("anas" + x.body.toString());
+                      var data = json.decode(x.body);
+                      double diff = data['features'][0]["properties"]["parameter"]["DIFF"]['13'];
+                      double dnr = data['features'][0]["properties"]["parameter"]["DNR"]['13'];
+                      double dailySunEnergy = dnr + diff;
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Predection(
+                            monthlyEnergyConsumption: monthlyEnergyConsumption.value,
+                            dailySunEnergy: dailySunEnergy,
+                            position: position,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+}
+
+class MyDialog extends StatefulWidget {
+  final String text1, text2;
+  final EnergyConsumption energyConsumption;
+
+  const MyDialog({Key key, this.text1, this.text2, this.energyConsumption}) : super(key: key);
+
+  @override
+  _MyDialogState createState() => _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  TextEditingController controller;
+  FocusNode focusNode;
+
+  @override
+  void initState() {
+    controller = TextEditingController();
+    controller.text = widget.text2 == '0' ? '' : widget.text2;
+    focusNode = FocusNode();
+    focusNode.addListener(() {
+      //controller.text = ''; // Set new value
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        widget.text1,
+      ),
+      content: TextFormField(
+        keyboardType: TextInputType.number,
+        controller: controller,
+        focusNode: focusNode,
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.done,
+          ),
+          onPressed: () {
+            //submitToFirebase(int.tryParse(controller.text) ?? 0, 'profit');
+            //widget.day.profit = double.tryParse(controller.text) ?? 0;
+            widget.energyConsumption.edit(double.tryParse(controller.text) ?? 0.0);
+            Navigator.pop(context, 1);
+          },
+        )
+      ],
+    );
+  }
+
+  void submitToFirebase(value, String field) {
+    Provider.of<MyDb>(context).setDataToDoc(
+      0,
+      {field: value},
+    );
+  }
+}

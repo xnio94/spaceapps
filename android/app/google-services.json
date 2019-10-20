@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "632984827614",
+    "firebase_url": "https://fireship-94d11.firebaseio.com",
+    "project_id": "fireship-94d11",
+    "storage_bucket": "fireship-94d11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632984827614:android:c8be7a58ab2bd59387344f",
+        "android_client_info": {
+          "package_name": "maghraoui.anas.fireship"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632984827614-dlqe755fs61gmtanp7bfhltgc3o28bpq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "maghraoui.anas.fireship",
+            "certificate_hash": "233b480313b8eb721977d329405b251bbc4c1fa2"
+          }
+        },
+        {
+          "client_id": "632984827614-eovu73pmovuouv5jp851otpfsir869vo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtWkd84eaP2-LYiv_jN_qRuDWR4kcbKYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632984827614-eovu73pmovuouv5jp851otpfsir869vo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
