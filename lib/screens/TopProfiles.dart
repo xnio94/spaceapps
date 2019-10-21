@@ -5,6 +5,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'ProfileWidget.dart';
 
 class TopProfiles extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
+          'Top Profiles',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
+      body: Container(color:Theme.of(context).backgroundColor,),
+    );
+  }
+}
+
+class TopProfiles2 extends StatelessWidget {
   final ScrollController _controller = ScrollController();
 
   @override

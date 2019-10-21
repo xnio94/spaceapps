@@ -96,7 +96,7 @@ class Predection extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.red,
+                        color: Colors.green,
                       ),
                       padding: const EdgeInsets.all(8.0),
                       child: Column(

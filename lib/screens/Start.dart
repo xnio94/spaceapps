@@ -1,13 +1,12 @@
 import 'dart:convert';
 
+import 'package:fireship/shared/enumMode.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../services/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'CircleButton.dart';
 import 'Predection.dart';
-import 'ProfileWidget.dart';
 import 'package:http/http.dart' as http;
 
 class Start extends StatefulWidget {
@@ -26,18 +25,13 @@ class EnergyConsumption {
 class _StartState extends State<Start> {
   Position position;
   EnergyConsumption monthlyEnergyConsumption = EnergyConsumption();
-  Color locationColor;
-  Color energyConsumptionColor;
+
+  Mode locationMode = Mode.blue;
+  Mode energyConsumptionMode = Mode.grey;
+  Mode predictMode = Mode.grey;
 
   Future<http.Response> getSolarData(String lat, String lon) async {
     String cord = "lat=$lat&lon=$lon";
-/*
-    print('https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py'
-        '?request=execute&identifier=SinglePoint&parameters=DIFF,DNR&userCommunity=SSE&'
-        'tempAverage=CLIMATOLOGY&outputList=JSON,ASCII&user=anonymous&' +
-        cord);
-    */
-
     return http.get('https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py'
             '?request=execute&identifier=SinglePoint&parameters=DIFF,DNR&userCommunity=SSE&'
             'tempAverage=CLIMATOLOGY&outputList=JSON,ASCII&user=anonymous&' +
@@ -77,13 +71,14 @@ class _StartState extends State<Start> {
                     text: (position == null) ? "1. add location" : position.toString(),
                     //.latitude.toString(),
                     radius: 210,
-                    color: locationColor,
+                    mode: locationMode,
                     onTap: () async {
                       Position pos = await Geolocator()
                           .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
                       setState(() {
                         position = pos;
-                        locationColor = Colors.green;
+                        locationMode = Mode.green;
+                        energyConsumptionMode = Mode.blue;
                       });
                     },
                   ),
@@ -93,7 +88,7 @@ class _StartState extends State<Start> {
                         ? "2. add energy consumption"
                         : monthlyEnergyConsumption.value.toString() + " kW-hr",
                     radius: 300,
-                    color: energyConsumptionColor,
+                    mode: energyConsumptionMode,
                     onTap: () async {
                       await showDialog(
                         context: context,
@@ -104,9 +99,16 @@ class _StartState extends State<Start> {
                           );
                         },
                       );
+                      //print(monthlyEnergyConsumption.value);
                       if (monthlyEnergyConsumption.value != 0) {
                         setState(() {
-                          energyConsumptionColor = Colors.green;
+                          energyConsumptionMode = Mode.green;
+                          predictMode = Mode.blue;
+                        });
+                      } else {
+                        setState(() {
+                          energyConsumptionMode = Mode.blue;
+                          predictMode = Mode.grey;
                         });
                       }
                     },
@@ -115,15 +117,13 @@ class _StartState extends State<Start> {
                     alignment: Alignment(.95, .95),
                     text: "3. Predict",
                     radius: 160,
+                    mode: predictMode,
                     onTap: () async {
-                      print(position.latitude.toString());
-                      print(position.longitude.toString());
                       //print('start');
                       var x = await getSolarData(
                         position.latitude.toString(),
                         position.longitude.toString(),
                       );
-                      print("anas" + x.body.toString());
                       var data = json.decode(x.body);
                       double diff = data['features'][0]["properties"]["parameter"]["DIFF"]['13'];
                       double dnr = data['features'][0]["properties"]["parameter"]["DNR"]['13'];

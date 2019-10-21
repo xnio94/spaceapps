@@ -1,3 +1,4 @@
+import 'package:fireship/shared/enumMode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/services.dart';
@@ -37,27 +38,28 @@ class Home extends StatelessWidget {
               //crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 CircleButton(
-                  alignment: Alignment(-.8,-1),
+                  alignment: Alignment(-.8, -1),
                   text: "Top Profiles",
                   radius: 190,
+                  mode: Mode.blue,
                   onTap: () {
                     Navigator.pushNamed(context, 'topProfiles');
                   },
                 ),
                 CircleButton(
-
-                  alignment: Alignment(-1,.5),
+                  alignment: Alignment(-1, .5),
                   text: "Start",
                   radius: 350,
+                  mode: Mode.blue,
                   onTap: () {
                     Navigator.pushNamed(context, 'start');
                   },
                 ),
                 CircleButton(
-
-                  alignment: Alignment(.95,.95),
+                  alignment: Alignment(.95, .95),
                   text: 'Invite',
                   radius: 120,
+                  mode: Mode.blue,
                   onTap: () {
                     //Navigator.pushNamed(context, 'start');
                   },
