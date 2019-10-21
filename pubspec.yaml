@@ -35,7 +35,7 @@ dependencies:
   rxdart: ^0.21.0
   geolocator: ^5.1.4+2
   #google_maps_flutter: 0.5.21+8
-
+  loading_indicator: "^1.0.0"
 dev_dependencies:
   flutter_test:
     sdk: flutter

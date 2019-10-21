@@ -8,6 +8,7 @@ import '../services/services.dart';
 import 'CircleButton.dart';
 import 'Predection.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_indicator/loading_indicator.dart';
 
 class Start extends StatefulWidget {
   @override
@@ -30,12 +31,22 @@ class _StartState extends State<Start> {
   Mode energyConsumptionMode = Mode.grey;
   Mode predictMode = Mode.grey;
 
+  Widget locationLoading;
+  Widget predictLoading;
+
   Future<http.Response> getSolarData(String lat, String lon) async {
     String cord = "lat=$lat&lon=$lon";
     return http.get('https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py'
             '?request=execute&identifier=SinglePoint&parameters=DIFF,DNR&userCommunity=SSE&'
             'tempAverage=CLIMATOLOGY&outputList=JSON,ASCII&user=anonymous&' +
         cord);
+  }
+
+  Widget loading() {
+    return LoadingIndicator(
+      indicatorType:Indicator.ballScaleMultiple,
+      color: Colors.green,
+    );
   }
 
   @override
@@ -63,19 +74,21 @@ class _StartState extends State<Start> {
             onTap: () {},
             child: Center(
               child: Stack(
-                //crossAxisAlignment: CrossAxisAlignment.end,
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   CircleButton(
                     alignment: Alignment(1, -1),
                     text: (position == null) ? "1. add location" : position.toString(),
-                    //.latitude.toString(),
                     radius: 210,
                     mode: locationMode,
+                    loading: locationLoading,
                     onTap: () async {
+                      setState(() {
+                        locationLoading = loading();
+                      });
                       Position pos = await Geolocator()
                           .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
                       setState(() {
+                        locationLoading = null;
                         position = pos;
                         locationMode = Mode.green;
                         energyConsumptionMode = Mode.blue;
@@ -118,8 +131,11 @@ class _StartState extends State<Start> {
                     text: "3. Predict",
                     radius: 160,
                     mode: predictMode,
+                    loading: predictLoading,
                     onTap: () async {
-                      //print('start');
+                      setState(() {
+                        predictLoading = loading();
+                      });
                       var x = await getSolarData(
                         position.latitude.toString(),
                         position.longitude.toString(),
@@ -137,6 +153,9 @@ class _StartState extends State<Start> {
                           ),
                         ),
                       );
+                      setState(() {
+                        predictLoading = null;
+                      });
                     },
                   ),
                 ],

@@ -8,8 +8,9 @@ class CircleButton extends StatelessWidget {
   final Function onTap;
   final Alignment alignment;
   final Mode mode;
+  final Widget loading;
 
-  const CircleButton({Key key, this.text, this.radius, this.onTap, this.alignment, this.mode})
+  const CircleButton({Key key, this.text, this.radius, this.onTap, this.alignment, this.mode, this.loading})
       : super(key: key);
 
   @override
@@ -30,7 +31,7 @@ class CircleButton extends StatelessWidget {
             padding: EdgeInsets.all(radius / 20 + 5),
             width: radius,
             height: radius,
-            child: Center(
+            child: loading??Center(
               child: AutoSizeText(
                 text,
                 maxLines: 2,
