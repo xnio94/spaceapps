@@ -11,7 +11,7 @@
         android:label="fireship"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="AIzaSyDRJvLmrpPbYSJWfqhO0IcysBXW-DpPdio"/>
+                   android:value="youre-google-maps-api"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
