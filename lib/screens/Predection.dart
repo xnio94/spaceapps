@@ -15,11 +15,12 @@ class Predection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            'Start',
-          ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
+          'Start',
+        ),
+        /*
           actions: [
             IconButton(
               icon: Icon(Icons.star, color: Colors.white),
@@ -28,7 +29,9 @@ class Predection extends StatelessWidget {
                 Navigator.pushNamed(context, '/');
               },
             ),
-          ]),
+          ],
+          */
+      ),
       body: Container(
         color: Theme.of(context).backgroundColor,
         child: Center(

@@ -44,8 +44,8 @@ class _StartState extends State<Start> {
 
   Widget loading() {
     return LoadingIndicator(
-      indicatorType:Indicator.ballScaleMultiple,
-      color: Colors.green,
+      indicatorType: Indicator.ballScaleMultiple,
+      color: Colors.white,
     );
   }
 
@@ -53,20 +53,23 @@ class _StartState extends State<Start> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Theme.of(context).primaryColor,
-            title: Text(
-              'Start',
+          centerTitle: true,
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
+            'Start',
+          ),
+          /*
+          actions: [
+            IconButton(
+              icon: Icon(Icons.star, color: Colors.white),
+              onPressed: () async {
+                await Provider.of<AuthService>(context).signOut();
+                Navigator.pushNamed(context, '/');
+              },
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.star, color: Colors.white),
-                onPressed: () async {
-                  await Provider.of<AuthService>(context).signOut();
-                  Navigator.pushNamed(context, '/');
-                },
-              ),
-            ]),
+          ],
+          */
+        ),
         body: Material(
           color: Colors.lightBlue.shade700,
           child: InkWell(

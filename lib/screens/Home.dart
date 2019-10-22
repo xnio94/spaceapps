@@ -13,20 +13,23 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            'Home',
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
+          'Home',
+        ),
+        /*
+        actions: [
+          IconButton(
+            icon: Icon(Icons.star, color: Colors.white),
+            onPressed: () async {
+              await Provider.of<AuthService>(context).signOut();
+              Navigator.pushNamed(context, '/');
+            },
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.star, color: Colors.white),
-              onPressed: () async {
-                await Provider.of<AuthService>(context).signOut();
-                Navigator.pushNamed(context, '/');
-              },
-            ),
-          ]),
+        ],
+        */
+      ),
       body: Material(
         color: Colors.lightBlue.shade700,
         child: InkWell(
