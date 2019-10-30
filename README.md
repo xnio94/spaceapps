@@ -1,9 +1,6 @@
 # GreenEarth
 This app was devoloped using the framwork flutter 
-
-
-# try the app
-install flutter from the officiel website https://flutter.dev/
+to try the app install flutter from the officiel website https://flutter.dev/
 then cd to the project directory and end execute "flutter run"
 
 ## about the app
