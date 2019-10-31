@@ -1,6 +1,6 @@
 # GreenEarth
 
-you can join the early access programe and downlod the Beta version from here https://bit.ly/324gLy2
+you can join the early access programe and downlod the Beta version from here https://bit.ly/2JDhT5q
 
 ## about the app
 
