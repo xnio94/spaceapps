@@ -2,10 +2,6 @@
 
 you can download the app from playstor https://bit.ly/324gLy2
 
-This app was devoloped using the framwork flutter 
-to try the app install flutter from the officiel website https://flutter.dev/
-then cd to the project directory and end execute "flutter run"
-
 ## about the app
 
 The GreenEarth mobile application can help you switch to solar power energy and be more earth friendly It uses the Power api provided by NASA to compute how much you can save (in a period of 10 years) if you switch to solar energy
@@ -31,6 +27,12 @@ their sum is an estimation of the the total energy a potential solar panel of on
 then we ask the user to write down how much energy(in kWh) it costs him monthly and by a simple computation we can estimate how many solar panels and the capacity of the battery he would need to cover all his/her needs and their acquisition and maintenance cost in 10 years and how much he/she would save by adopting the solar panels .
 
 we think that our application will convince the average consumer to adopt solar panels then saving energy and contributing to the fight against the global warming.
+
+## want to add improvements
+
+This app was devoloped using the framwork flutter 
+to try the app install flutter from the officiel website https://flutter.dev/
+then cd to the project directory and end execute "flutter run"
 
 ## about the framwork
 A few resources to get you started if this is your first Flutter project:
