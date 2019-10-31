@@ -1,6 +1,6 @@
 # GreenEarth
 
-you can download the app from playstor https://bit.ly/324gLy2
+you can download the app (Beta version) from Google Play Store https://bit.ly/324gLy2
 
 ## about the app
 
