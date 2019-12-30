@@ -1,6 +1,6 @@
-import 'package:fireship/services/db.dart';
-import 'package:fireship/services/globals.dart';
-import 'package:fireship/services/models.dart';
+import 'package:greenearth/services/db.dart';
+import 'package:greenearth/services/globals.dart';
+import 'package:greenearth/services/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fireship/shared/enumMode.dart';
+import 'package:greenearth/shared/enumMode.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +36,7 @@ class _StartState extends State<Start> {
 
   Future<http.Response> getSolarData(String lat, String lon) async {
     String cord = "lat=$lat&lon=$lon";
+    print(cord);
     return http.get('https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py'
             '?request=execute&identifier=SinglePoint&parameters=DIFF,DNR&userCommunity=SSE&'
             'tempAverage=CLIMATOLOGY&outputList=JSON,ASCII&user=anonymous&' +
@@ -139,17 +140,22 @@ class _StartState extends State<Start> {
                       setState(() {
                         predictLoading = loading();
                       });
+
+                      print("anas");
                       var x = await getSolarData(
                         position.latitude.toString(),
                         position.longitude.toString(),
                       );
+                      print("anas2");
                       var data = json.decode(x.body);
                       double diff = data['features'][0]["properties"]["parameter"]["DIFF"]['13'];
                       double dnr = data['features'][0]["properties"]["parameter"]["DNR"]['13'];
                       double dailySunEnergy = dnr + diff;
+
+                      print("anas");
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => Predection(
+                          builder: (context) => Prediction(
                             monthlyEnergyConsumption: monthlyEnergyConsumption.value,
                             dailySunEnergy: dailySunEnergy,
                             position: position,

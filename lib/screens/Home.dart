@@ -1,4 +1,4 @@
-import 'package:fireship/shared/enumMode.dart';
+import 'package:greenearth/shared/enumMode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/services.dart';

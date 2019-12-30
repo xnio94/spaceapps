@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fireship/shared/enumMode.dart';
+import 'package:greenearth/shared/enumMode.dart';
 import 'package:flutter/material.dart';
 
 class CircleButton extends StatelessWidget {

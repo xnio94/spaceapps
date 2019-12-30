@@ -1,15 +1,31 @@
-import 'package:fireship/services/auth.dart';
+import 'package:greenearth/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
-class Predection extends StatelessWidget {
-  final double monthlyEnergyConsumption;
+class Prediction extends StatelessWidget {
+  final double monthlyEnergyConsumption; //kW-hr
+  final double dailyEnergyConsumption; //kW-hr
   final double dailySunEnergy;
+  static const double regionalBatteryPrice = 171.40; // $/kW-hr
+  static const double regionalSolarPanelPrice = 2040; // $/Kw
+  static const double regionalElectricityPrice = 0.12; // $/kW-hr
+  final double solarPanelInvestment;
+  final double batteriesInvestment;
+  final double regionalElectricityPriceFor15Years;
   final Position position;
 
-  const Predection({Key key, this.monthlyEnergyConsumption, this.position, this.dailySunEnergy})
-      : super(key: key);
+  const Prediction({
+    Key key,
+    this.monthlyEnergyConsumption,
+    this.position,
+    this.dailySunEnergy,
+  })  : dailyEnergyConsumption = (monthlyEnergyConsumption / 30),
+        solarPanelInvestment = 2 * regionalSolarPanelPrice * (monthlyEnergyConsumption / 30) / 12,
+        batteriesInvestment = 1.2 * regionalBatteryPrice * (monthlyEnergyConsumption / 30),
+        regionalElectricityPriceFor15Years =
+            (regionalElectricityPrice * 5475 * monthlyEnergyConsumption / 30),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +36,6 @@ class Predection extends StatelessWidget {
         title: Text(
           'Start',
         ),
-        /*
-          actions: [
-            IconButton(
-              icon: Icon(Icons.star, color: Colors.white),
-              onPressed: () async {
-                await Provider.of<AuthService>(context).signOut();
-                Navigator.pushNamed(context, '/');
-              },
-            ),
-          ],
-          */
       ),
       body: Container(
         color: Theme.of(context).backgroundColor,
@@ -59,41 +64,48 @@ class Predection extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text("daily Energy Consumption : " +
-                        (monthlyEnergyConsumption / 30).toString() +
+                        dailyEnergyConsumption.toString() +
                         " kW-hr"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        "Sattry price in your region : " + (2685.45).toString() + "Cur/capacity"),
+                    child: Text("Battery  price in your region : " +
+                        regionalBatteryPrice.toString() +
+                        " \$/kW-hr"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Solar panel price in your region : " +
+                        regionalSolarPanelPrice.toString() +
+                        " \$/Kw "),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                        "Solar panel price in your region : " + (7985.45).toString() + "Cur/m²"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Solar panel investement : " + 89562.66.toString() + " cur"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Battries investement : " + 27867.66.toString() + " cur"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("total investement : " + 117429.66.toString() + " cur"),
+                        "Solar panel investement : " + solarPanelInvestment.toString() + " \$"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child:
-                        Text("cost of electricity in your region : " + 48.66.toString() + " cur"),
+                        Text("Batteries investement : " + batteriesInvestment.toString() + " \$"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("cost of electricity in your region for 10 years :" +
-                        48.66.toString() +
-                        " cur"),
+                    child: Text("total investement : " +
+                        (batteriesInvestment + solarPanelInvestment).toString() +
+                        " \$"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("cost of electricity in your region : " +
+                        regionalElectricityPrice.toString() +
+                        " \$/Kw-hr"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("cost of electricity in your region for 15 years :" +
+                        regionalElectricityPriceFor15Years.toString() +
+                        " \$"),
                   ),
                   Expanded(
                     child: Container(
@@ -107,7 +119,7 @@ class Predection extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Text(
-                            "How mush money you will save if you switch to clean energy for 10 years period: ",
+                            "How mush money you will save if you switch to clean energy for 15 years period: ",
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -115,7 +127,11 @@ class Predection extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            31781.66.toString() + " Cur",
+                            (regionalElectricityPriceFor15Years -
+                                        batteriesInvestment -
+                                        solarPanelInvestment).floor()
+                                    .toString() +
+                                " \$",
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
