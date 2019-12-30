@@ -4,7 +4,7 @@ join the early access programe and downlod the Beta version from here https://bi
 
 ## about the app
 
-The GreenEarth mobile application can help you switch to solar power energy and be more earth friendly It uses the Power api provided by NASA to compute how much you can save (in a period of 10 years) if you switch to solar energy
+The GreenEarth mobile-application can help you switch to solar power energy and be more earth friendly It uses the Power api provided by NASA to compute how much you can save (in a period of 10 years) if you switch to solar energy
 
 ## detailed description
 
