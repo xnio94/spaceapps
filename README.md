@@ -1,5 +1,7 @@
 # GreenEarth
 
+greenEarth was awarded the <a href = "https://2019.spaceappschallenge.org/challenges/living-our-world/warming-planet-cool-ideas/teams/cool-it-together/project">GLOBAL AWARD NOMINEE<a/> during the <a href = "https://www.spaceappschallenge.org/">NASA International Space Apps Challenge<a/>
+
 join the early access programe and downlod the Beta version from here https://bit.ly/2JDhT5q
 
 ## about the app
